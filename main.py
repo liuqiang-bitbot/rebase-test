@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print_hi('PyCharm111')
 
 
-    print_hi('PyCharm')
+    print_hi('PyCharm22')
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
