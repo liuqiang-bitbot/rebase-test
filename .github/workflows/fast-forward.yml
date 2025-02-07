@@ -16,7 +16,6 @@ jobs:
       github.event.comment.body == '/merge' &&
       !github.event.issue.closed_at &&
       github.event.issue.state == 'open' &&
-      github.event.comment.user.login == 'samkit-jain'
     runs-on: ubuntu-latest
     name: Merge PR
 
