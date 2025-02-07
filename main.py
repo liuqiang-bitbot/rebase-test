@@ -12,7 +12,7 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharmaaa')
-    print_hi('PyCharm111')
+    print_hi('PyCharm111------')
 
 
     print_hi('PyCharm22')
