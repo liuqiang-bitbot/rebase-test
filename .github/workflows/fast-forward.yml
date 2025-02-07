@@ -15,7 +15,7 @@ jobs:
       github.event.issue.pull_request &&
       github.event.comment.body == '/merge' &&
       !github.event.issue.closed_at &&
-      github.event.issue.state == 'open' &&
+      github.event.issue.state == 'open'
     runs-on: ubuntu-latest
     name: Merge PR
 
