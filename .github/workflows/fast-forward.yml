@@ -1,0 +1,40 @@
+name: Fast Forward Merge PR
+
+on:
+  pull_request:
+    types: [synchronize, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  fast-forward-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 需要完整的历史记录
+
+      - name: Setup Git user
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Check if PR can be fast-forwarded
+        run: |
+          git fetch origin main
+          BASE_BRANCH="main"
+          PR_BRANCH="${{ github.head_ref }}"
+
+          # 检查是否可以 fast-forward
+          if git merge-base --is-ancestor origin/$BASE_BRANCH origin/$PR_BRANCH; then
+            echo "Can fast-forward, merging..."
+            git checkout $BASE_BRANCH
+            git merge --ff-only origin/$PR_BRANCH
+            git push origin $BASE_BRANCH
+          else
+            echo "Cannot fast-forward. Please rebase the branch."
+            exit 1
+          fi
