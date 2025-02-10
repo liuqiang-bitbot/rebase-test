@@ -15,7 +15,7 @@ jobs:
       - name: Get PR target branch
         id: get_target_branch
         run: |
-          run: echo "target-branch=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          run: echo "${{ github.event.pull_request.base.ref }}"
 
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
@@ -36,10 +36,10 @@ jobs:
           PR_BRANCH: ${{ needs.get-target-branch.outputs.target-branch }}
         run: |
           echo "Target branch: ${PR_BRANCH}"
-          if [[ "${PR_BRANCH}" == "dev" ]]; then
+          if [[ "${github.event.pull_request.base.ref}" == "dev" ]]; then
             echo "Triggering deployment for dev branch"
             gh workflow run deploy-main-bot-sit.yml
-          elif [[ "${PR_BRANCH}" == "main" ]]; then
+          elif [[ "${github.event.pull_request.base.ref}" == "main" ]]; then
             echo "Triggering deployment for main branch"
             gh workflow run deploy-main-bot-prod.yml
           else
