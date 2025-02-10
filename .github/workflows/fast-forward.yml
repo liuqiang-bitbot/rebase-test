@@ -9,11 +9,6 @@ jobs:
             && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      workflows: write
 
     steps:
       - name: Fast forwarding
