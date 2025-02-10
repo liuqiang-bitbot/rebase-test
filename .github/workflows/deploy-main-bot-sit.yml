@@ -2,7 +2,7 @@ name: Deploy test server sit
 
 on:
   push:
-    branches: ['main']
+    branches: ['dev']
   workflow_dispatch:
 
 env:
