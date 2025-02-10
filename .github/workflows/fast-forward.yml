@@ -35,10 +35,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${needs.fast-forward.outputs.head_ref}" == "dev" ]]; then
+          if [[ "${{ needs.fast-forward.outputs.head_ref }}" == "dev" ]]; then
             echo "Triggering deployment for dev branch"
             gh workflow run deploy-main-bot-sit.yml
-          elif [[ "${needs.fast-forward.outputs.head_ref}" == "main" ]]; then
+          elif [[ "${{ needs.fast-forward.outputs.head_ref }}" == "main" ]]; then
             echo "Triggering deployment for main branch"
             gh workflow run deploy-main-bot-prod.yml
           else
