@@ -9,14 +9,26 @@ jobs:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     outputs:
-      head_ref: ${{ steps.comment-branch.outputs.head_ref }}
+      # 输出目标分支
+      target_branch: ${{ steps.get-target-branch.outputs.target_branch }}
     steps:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
+
       - name: Get PR target branch
-        run: |
-            echo "The target branch is: ${{ steps.comment-branch.outputs.head_ref }}"
+        id: get-target-branch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            const targetBranch = pullRequest.base.ref;
+            core.setOutput('target_branch', targetBranch);
+            console.log(`The target branch is: ${targetBranch}`);
 
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
@@ -34,11 +46,12 @@ jobs:
       - name: Trigger appropriate deployment workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_BRANCH: ${{ needs.fast-forward.outputs.target_branch }}
         run: |
-          if [[ "${{ needs.fast-forward.outputs.head_ref }}" == "dev" ]]; then
+          if [[ "${{ needs.fast-forward.outputs.target_branch }}" == "dev" ]]; then
             echo "Triggering deployment for dev branch"
             gh workflow run deploy-main-bot-sit.yml
-          elif [[ "${{ needs.fast-forward.outputs.head_ref }}" == "main" ]]; then
+          elif [[ "${{ needs.fast-forward.outputs.target_branch }}" == "main" ]]; then
             echo "Triggering deployment for main branch"
             gh workflow run deploy-main-bot-prod.yml
           else
