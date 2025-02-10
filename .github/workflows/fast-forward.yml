@@ -8,11 +8,14 @@ jobs:
     if: ${{ contains(github.event.comment.body, '/fast-forward')
             && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
+    outputs:
+      target_branch: ${{ steps.get_target_branch.outputs.target_branch }}
 
     steps:
       - name: Get PR target branch
         run:
-          echo "The target branch is: ${{ github.event.pull_request.base.ref }}"
+          echo "TARGET_BRANCH=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          echo "::set-output name=target_branch::${{ github.event.pull_request.base.ref }}"
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
         with:
@@ -33,7 +36,7 @@ jobs:
       - name: Trigger appropriate deployment workflow
         env:
           GH_TOKEN: ${{ github.token }}  # 设置 GH_TOKEN 环境变量
-          PR_BRANCH: ${{ github.event.pull_request.base.ref }}
+          PR_BRANCH: ${{ needs.fast-forward.outputs.target_branch }}
         run: |
           echo "${PR_BRANCH}"
           if [[ "${PR_BRANCH}" == "dev" ]]; then
