@@ -1,17 +1,14 @@
 name: Deploy test server prod 1
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+  push:
+    branches: ['main']
   workflow_dispatch:
 
 env:
-  KEY: sit  # 全局定义 KEY 环境变量
+  KEY: prod  # 全局定义 KEY 环境变量
   ECR_REGISTRY: 147997140725.dkr.ecr.ap-southeast-1.amazonaws.com  # 全局定义 ECR_REGISTRY
-  ECR_REPOSITORY: sit/bitbot/test  # 全局定义 ECR_REPOSITORY
+  ECR_REPOSITORY: prod/bitbot/test  # 全局定义 ECR_REPOSITORY
   IMAGE_TAG: test-${{ github.sha }}-${{ github.run_id }}  # 全局定义 IMAGE_TAG
 
 jobs:
