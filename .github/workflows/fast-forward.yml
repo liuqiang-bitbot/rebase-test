@@ -35,7 +35,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BRANCH: ${{ needs.get-target-branch.outputs.target-branch }}
         run: |
-          echo "Target branch: ${PR_BRANCH}"
           if [[ "${github.event.pull_request.base.ref}" == "dev" ]]; then
             echo "Triggering deployment for dev branch"
             gh workflow run deploy-main-bot-sit.yml
