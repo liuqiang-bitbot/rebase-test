@@ -2,11 +2,8 @@
 name: Deploy test server sit
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - dev
+  push:
+    branches: ['dev']
   workflow_dispatch:
 
 env:
