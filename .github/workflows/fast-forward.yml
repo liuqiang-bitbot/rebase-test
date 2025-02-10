@@ -17,7 +17,7 @@ jobs:
       - name: Get PR target branch
         id: get_target_branch
         run: |
-          echo "${github_pull_request.base.ref}"
+          echo "${{ github.event.pull_request.base.ref }}"
 
   ci_cd:
     runs-on: ubuntu-latest
