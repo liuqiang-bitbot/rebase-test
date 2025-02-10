@@ -8,12 +8,10 @@ jobs:
     if: ${{ contains(github.event.comment.body, '/fast-forward')
             && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Get PR target branch
         run:
           echo "The target branch is: ${{ github.event.pull_request.base.ref }}"
-               ${{ github.event.pull_request.base.ref }}>> $GITHUB_ENV
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
         with:
