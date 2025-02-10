@@ -1,12 +1,11 @@
-
-name: Deploy test server sit
+name: Deploy test server prod 1
 
 on:
   pull_request:
     types:
       - closed
     branches:
-      - dev
+      - main
   workflow_dispatch:
 
 env:
@@ -74,8 +73,4 @@ jobs:
 
       - name: Update eks
         run: |
-          sed -i "s|<IMAGE_PLACEHOLDER>|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s.yaml
-
-          # Apply the updated deployment configuration
-          kubectl -n ${{ env.KEY }} apply -f k8s.yaml  # 使用全局环境变量 KEY
           kubectl get pods -n sit
