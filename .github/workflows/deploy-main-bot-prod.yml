@@ -15,7 +15,7 @@ jobs:
   build-and-push:
     name: Build and Push to ECR
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Check out code
@@ -45,7 +45,7 @@ jobs:
     needs: [build-and-push]
     name: Deploy to EKS
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Checkout code
@@ -70,4 +70,4 @@ jobs:
 
       - name: Update eks
         run: |
-          kubectl get pods -n sit
+          kubectl get pods -n ${{ env.KEY }}
