@@ -8,6 +8,8 @@ jobs:
   fast-forward:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
+    outputs:
+      head_ref: ${{ steps.comment-branch.outputs.head_ref }}
     steps:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
@@ -32,12 +34,11 @@ jobs:
       - name: Trigger appropriate deployment workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_BRANCH: ${{ needs.get-target-branch.outputs.target-branch }}
         run: |
-          if [[ "${steps.comment-branch.outputs.head_ref}" == "dev" ]]; then
+          if [[ "${needs.fast-forward.outputs.head_ref}" == "dev" ]]; then
             echo "Triggering deployment for dev branch"
             gh workflow run deploy-main-bot-sit.yml
-          elif [[ "${steps.comment-branch.outputs.head_ref}" == "main" ]]; then
+          elif [[ "${needs.fast-forward.outputs.head_ref}" == "main" ]]; then
             echo "Triggering deployment for main branch"
             gh workflow run deploy-main-bot-prod.yml
           else
