@@ -9,10 +9,12 @@ jobs:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
       - name: Get PR target branch
-        id: get_target_branch
-        run: |
-          echo "The target branch is ${{ github.event.pull_request.base.ref }}"
+        run:
+            echo "The target branch is: ${{ steps.comment-branch.outputs.head_ref }}"
 
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
