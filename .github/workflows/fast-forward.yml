@@ -15,8 +15,7 @@ jobs:
       - name: Get PR target branch
         id: get_target_branch
         run: |
-          TARGET_BRANCH="${{ github.event.issue.pull_request.base.ref }}"
-          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> $GITHUB_ENV
+          TARGET_BRANCH="${{ github.event.issue.pull_request.pull_request.base.ref }}"
           echo "target_branch=${TARGET_BRANCH}" >> $GITHUB_OUTPUT
 
       - name: Fast forwarding
