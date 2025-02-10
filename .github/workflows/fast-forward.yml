@@ -43,3 +43,4 @@ jobs:
             gh workflow run deploy-main-bot-prod.yml
           else
             echo "This is neither the dev nor main branch. Skipping deployment."
+          fi
