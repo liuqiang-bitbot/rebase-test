@@ -8,9 +8,6 @@ jobs:
   fast-forward:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
-    outputs:
-      target-branch: ${{ steps.extract-branch.outputs.target-branch }}
-
     steps:
       - name: Get PR target branch
         id: get_target_branch
