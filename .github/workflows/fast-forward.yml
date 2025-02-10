@@ -9,23 +9,12 @@ jobs:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
       - name: Get PR target branch
-        id: get_target_branch
-        run: |
-          branch_name=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$branch_name" == "main" ]; then
-          # 主分支流程
-          echo "Running main branch specific process"
-          # 在这里添加主分支的具体命令，例如构建、部署等
-          elif [ "$branch_name" == "develop" ]; then
-          # develop分支流程
-          echo "Running develop branch specific process"
-          # 在这里添加develop分支的具体命令
-          else
-          # 其他分支流程
-          echo "Running other branches specific process"
-          # 在这里添加其他分支的具体命令
-          fi
+        run:
+            echo "The target branch is: ${{ steps.comment-branch.outputs.head_ref }}"
 
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
