@@ -27,6 +27,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get target branch of PR
+        run: |
+            PR_BRANCH=$(curl -s \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.issue.number }} | \
+              jq -r '.base.ref')
+            echo "Target branch is $PR_BRANCH"
+            echo "GITHUB_REF=refs/heads/$PR_BRANCH" >> $GITHUB_ENV
+
       - name: Trigger appropriate deployment workflow
         env:
           GH_TOKEN: ${{ github.token }}  # 设置 GH_TOKEN 环境变量
