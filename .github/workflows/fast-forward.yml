@@ -8,24 +8,7 @@ jobs:
   fast-forward:
     if: ${{ contains(github.event.comment.body, '/fast-forward') && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
-    outputs:
-      # 输出目标分支
-      target_branch: ${{ steps.get-target-branch.outputs.target_branch }}
     steps:
-      - name: Get PR target branch
-        id: get-target-branch
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data: pullRequest } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-            const targetBranch = pullRequest.base.ref;
-            core.setOutput('target_branch', targetBranch);
-            console.log(`The target branch is: ${targetBranch}`);
-
       - name: Fast forwarding
         uses: sequoia-pgp/fast-forward@v1
         with:
