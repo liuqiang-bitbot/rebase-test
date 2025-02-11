@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        with:
+          ref: ${{ needs.fast-forward.outputs.target_branch }}
       - name: Trigger appropriate deployment workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
