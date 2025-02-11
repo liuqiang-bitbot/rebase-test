@@ -29,20 +29,6 @@ spec:
         env:
           - name: TZ
             value: "Asia/Shanghai"  # 设置时区为东八区
-        volumeMounts:
-          - name: config-volume
-            mountPath: /app/config.yaml
-            subPath: config.yaml  # Mount the specific file as config.yaml
-          - name: config-global-bundle-volume
-            mountPath: /app/global-bundle.pem
-            subPath: global-bundle.pem  # Mount the specific file as config.yaml
-      volumes:
-        - name: config-volume
-          configMap:
-            name: data-server-config  # Reference the ConfigMap
-        - name: config-global-bundle-volume
-          configMap:
-            name: global-bundle-config  # Reference the ConfigMap
 ---
 
 apiVersion: v1
