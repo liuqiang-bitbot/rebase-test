@@ -1,6 +1,8 @@
 name: Deploy test server sit
 
 on:
+  push:
+    branches: ['dev']
   workflow_dispatch:
 
 env:
