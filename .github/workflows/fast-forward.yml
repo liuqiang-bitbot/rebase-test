@@ -14,3 +14,4 @@ jobs:
         with:
           merge: true
           comment: always
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
