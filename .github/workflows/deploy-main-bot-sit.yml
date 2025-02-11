@@ -76,4 +76,7 @@ jobs:
 
       - name: Update eks
         run: |
-          kubectl get pods -n sit
+          sed -i "s|<IMAGE_PLACEHOLDER>|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s.yaml
+
+          # Apply the updated deployment configuration
+          kubectl -n ${{ env.KEY }} apply -f k8s.yaml  # 使用全局环境变量 KEY
