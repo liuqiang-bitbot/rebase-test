@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-server
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test-server
+  template:
+    metadata:
+      labels:
+        app: test-server
+    spec:
+      containers:
+      - name: test-server
+        image: "<IMAGE_PLACEHOLDER>"
+        ports:
+          - containerPort: 5000
+        resources:
+          requests:
+            memory: "256Mi"   # 请求的内存量
+            cpu: "200m"       # 请求的 CPU 数量
+          limits:
+            memory: "256Mi"     # 限制的内存量
+            cpu: "200m"          # 限制的 CPU 数量
+        env:
+          - name: TZ
+            value: "Asia/Shanghai"  # 设置时区为东八区
+        volumeMounts:
+          - name: config-volume
+            mountPath: /app/config.yaml
+            subPath: config.yaml  # Mount the specific file as config.yaml
+          - name: config-global-bundle-volume
+            mountPath: /app/global-bundle.pem
+            subPath: global-bundle.pem  # Mount the specific file as config.yaml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: data-server-config  # Reference the ConfigMap
+        - name: config-global-bundle-volume
+          configMap:
+            name: global-bundle-config  # Reference the ConfigMap
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-server
+spec:
+  type: ClusterIP
+  selector:
+    app: test-server
+  ports:
+  - protocol: TCP
+    name: data-server
+    port: 5000
+    targetPort: 5000
