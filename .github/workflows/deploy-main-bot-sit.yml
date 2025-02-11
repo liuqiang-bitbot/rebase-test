@@ -20,8 +20,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          ref: "dev"
       - name: Print current branch
         run: |
             current_branch=$(git branch --show-current)
@@ -56,8 +54,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: "dev"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
