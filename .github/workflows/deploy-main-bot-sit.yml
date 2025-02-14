@@ -4,6 +4,12 @@ on:
   push:
     branches: ['dev']
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'dev'
+
 
 env:
   KEY: sit  # 全局定义 KEY 环境变量
