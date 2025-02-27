@@ -23,6 +23,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          repository: liuqiang-bitbot/test-ecs
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        path: xxxx
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -41,7 +48,7 @@ jobs:
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}  # 使用全局环境变量
           IMAGE_TAG: ${{ env.IMAGE_TAG }}  # 使用全局环境变量
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f xxxx/Dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   deploy-to-eks:
